@@ -12,13 +12,13 @@ public interface TaskService {
 
 	void removeTask(int id);
 
-	List<Task> getTasks();
+	List<Task> getTasks(boolean completed);
 	
-	public List<Task> getTasksByProjectId(int taskId);
+	public List<Task> getTasksByProjectId(int projectId, boolean completed);
 
 	int countTasks();
 	
-	int countTasksByProjectIds(int taskId);
+	int countTasksByProjectIds(int projectId);
 	
 	void markAsCompleted(Task task);
 

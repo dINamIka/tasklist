@@ -30,13 +30,13 @@ public class TaskServiceImpl implements TaskService{
 	}
 
 	@Override
-	public List<Task> getTasks() {
-		return this.taskDao.getAll();
+	public List<Task> getTasks(boolean completed) {
+		return this.taskDao.getAll(completed);
 	}
 
 	@Override
-	public List<Task> getTasksByProjectId(int taskId) {
-		return getTasksByProjectId(taskId);
+	public List<Task> getTasksByProjectId(int projectId, boolean completed) {
+		return getTasksByProjectId(projectId, completed);
 	}
 
 	@Override
@@ -45,13 +45,17 @@ public class TaskServiceImpl implements TaskService{
 	}
 
 	@Override
-	public int countTasksByProjectIds(int taskId) {
-		return taskDao.countByProjectId(taskId);
+	public int countTasksByProjectIds(int projectId) {
+		return taskDao.countByProjectId(projectId);
 	}
 
 	@Override
 	public void markAsCompleted(Task task) {
-		task.setCompleted(true);
+		boolean done = true;
+		if (task.isCompleted()) {
+			done = false;
+		}
+		task.setCompleted(done);
 		taskDao.save(task);
 	}
 

@@ -55,18 +55,23 @@ public class ProjectController {
 	 * @param lineNumber - number of project in displayed list
 	 */
 	public void editProject(int lineNumber) {
-		Project project = prjList.get(lineNumber - 1);
-		do {
-			System.out.println("Old project name: " + project.getProjectName());
-			System.out.print("New project name: ");
-			project.setProjectName(scanner.nextLine());
-		} while (project.getProjectName() == null || project.getProjectName().equals(""));
-		
-		System.out.println("Old description: " + project.getDescription());
-		System.out.print("New description: ");
-		project.setDescription(scanner.nextLine());
-		prjService.saveProject(project);
-		showProjects();
+		try {
+			Project project = prjList.get(lineNumber - 1);
+			do {
+				System.out.println("Old project name: " + project.getProjectName());
+				System.out.print("New project name: ");
+				project.setProjectName(scanner.nextLine());
+			} while (project.getProjectName() == null || project.getProjectName().equals(""));
+			
+			System.out.println("Old description: " + project.getDescription());
+			System.out.print("New description: ");
+			project.setDescription(scanner.nextLine());
+			prjService.saveProject(project);
+		} catch (Exception ex) {
+			System.out.println("Chosen project doesn't exist! Please type correct line number.");
+		} finally {
+			showProjects();
+		}
 	}
 	
 	
@@ -75,9 +80,14 @@ public class ProjectController {
 	 * @param lineNumber - number of project in displayed list
 	 */
 	public void deleteProject(int lineNumber) {
-		Project project = prjList.get(lineNumber - 1);
-		prjService.removeProject(project.getId());
-		showProjects();
+		try {
+			Project project = prjList.get(lineNumber - 1);
+			prjService.removeProject(project.getId());
+		} catch (Exception ex) {
+			System.out.println("Chosen project doesn't exist! Please type correct line number.");
+		} finally {
+			showProjects();
+		}
 	}
 	
 	

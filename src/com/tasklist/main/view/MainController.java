@@ -52,7 +52,7 @@ public class MainController {
 		            	number = getLineNumber(line);
 		            	this.taskController.deleteTask(number);
 		 	            break;
-		            case "MARK COMPLETED":
+		            case "MARK DONE":
 		            	line = input.substring(comMatcher.end() - 1, input.length());
 		            	number = getLineNumber(line);
 		            	this.taskController.markAsCompleted(number);
@@ -63,24 +63,18 @@ public class MainController {
 		            	this.taskController.markAsStarred(number);
 		 	            break;
 		            case "SHOW TASKS":
-		            	this.taskController.showTasks();
+		            	this.taskController.showUndoneTasks();
 		            	break;
-		            case "SHOW COMPLETED":
-		            	//add method to controller
-		            	System.out.println("show completed tasks");
+		            case "SHOW DONE":
+		            	this.taskController.showDone();
 		            	break;
-		            case "SHOW BY RPOJECT":
-		            	//show tasks by project number line - add implementation
-//		            	line = input.substring(comMatcher.end() - 1, input.length());
-//		            	number = getLineNumber(line);
-		            	System.out.println("show tasks by project");
-		 	            break;
 		            case "ADD PROJECT":
 		            	this.prjController.addProject();
 		            	break;
 		            case "EDIT PROJECT":
 		            	line = input.substring(comMatcher.end() - 1, input.length());
 		            	number = getLineNumber(line);
+		            	System.out.println(number);
 		            	this.prjController.editProject(number);
 		 	            break;
 		            case "DELETE PROJECT":
@@ -121,7 +115,7 @@ public class MainController {
 			String id = this.scanner.nextLine();
 			switch(id) {
 			case "1":
-				taskController.showTasks();
+				taskController.showUndoneTasks();
 				menu = false;
 				launchCommandMenu();
 				break;
@@ -209,12 +203,11 @@ public class MainController {
 		
 		ADD_TASK("add task - add new task"),
 		SHOW_TASKS("show tasks - show all current tasks"),
-		SHOW_COMPLETED("show completed - show all done tasks"),
+		SHOW_DONE("show done - show all done tasks"),
 		EDIT_TASK("edit task <line number> - editing selected task (task select by line number)"),
 		DELETE_TASK("delete task <line number> - delete selected task (task select by line number)"),
-		MARK_COMPLETED("mark completed <line number> - mark task as completed (or uncompleted)"),
+		MARK_DONE("mark done <line number> - mark task as completed (or uncompleted)"),
 		MARK_STARRED("mark starred <line number> - mark task as starred (or unstarred)"),
-		SHOW_BY_PROJECT("show by project <line number> - show task by selected project"),
 		ADD_PROJECT("add project - add new project"),
 		SHOW_PROJECTS("show projects - show all projects"),
 		EDIT_PROJECT("edit project <line number> - edit selected project (project select by line number)"),

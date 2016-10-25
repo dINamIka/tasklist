@@ -16,7 +16,6 @@ public class TaskDaoImpl implements TaskDao {
 	public void save(Task task) {
 		Connection connection = DbUtil.getConnection();
 		PreparedStatement ps = null;
-		System.out.println(task);
 		int taskId = task.getId();
 		String taskName = task.getTaskName();
 		boolean completed = task.isCompleted();
@@ -132,24 +131,26 @@ public class TaskDaoImpl implements TaskDao {
 	}
 	
 	
-	public List<Task> getAll() {
-		return getAllByProjectId(0);
+	public List<Task> getAll(boolean completed) {
+		return getAllByProjectId(0, completed);
 	}
 	
 	
-	public List<Task> getAllByProjectId(int projectId) {
+	public List<Task> getAllByProjectId(int projectId, boolean completed) {
 		Connection connection = DbUtil.getConnection();
 		PreparedStatement st = null;
 		List<Task> tasksList = new ArrayList<>();
 		Task task = null;
 		try {
 			if (projectId == 0) {
-				st = connection.prepareStatement("SELECT * FROM TASK ORDER BY -DUEDATE DESC, "
+				st = connection.prepareStatement("SELECT * FROM TASK WHERE COMPLETED = ? ORDER BY -DUEDATE DESC, "
 												+ "PRIORITY DESC, STARRED, TASKNAME");
+				st.setBoolean(1, completed);
 			} else {
-				st = connection.prepareStatement("SELECT * FROM TASK WHERE PROJECTID = ? "
+				st = connection.prepareStatement("SELECT * FROM TASK WHERE COMPLETED = ? PROJECTID = ? "
 									+ "ORDER BY -DUEDATE DESC, PRIORITY DESC, STARRED, TASKNAME");
-				st.setInt(1, projectId);
+				st.setBoolean(1, completed);
+				st.setInt(2, projectId);
 			}
 			ResultSet result = st.executeQuery();
 			if (result != null) {
@@ -174,7 +175,6 @@ public class TaskDaoImpl implements TaskDao {
 				st.close();
 				connection.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

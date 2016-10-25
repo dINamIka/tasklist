@@ -28,10 +28,19 @@ public class TaskController {
 	/**
 	 * show uncompleted tasks
 	 */
-	public void showTasks() {
+	public void showUndoneTasks() {
+		this.taskList = taskService.getTasks(false);
+		showTaskFormat();
+	}
+	
+	public void showDone() {
+		this.taskList = taskService.getTasks(true);
+		showTaskFormat();
+	}
+	
+	private void showTaskFormat() {
 		System.out.println("NUMBER\tDONE\t   \u2605\tOVERDUE\tTASK\t\t\t    PRIORITY\tSTART DATE\t  DUE DATE\t  PROJECT");
 		int i = 0;
-		this.taskList = taskService.getTasks();
 		Project prj = null;
 		for (Task t : this.taskList) {
 			prj = prjService.findProject(t.getProjectId());
@@ -40,16 +49,7 @@ public class TaskController {
 	}
 	
 	
-	public void showCompleted() {
-		
-	}
-	
-	public void showAll() {
-		
-	}
-	
 	public void processTask(int lineNumber) {
-		boolean newTask = false;
 		Task task = null;
 		if (lineNumber == -1) {
 			task = new Task();
@@ -110,7 +110,7 @@ public class TaskController {
 			}
 		} while(task.getProjectId() == 0);
 		taskService.saveTask(task);
-		showTasks();
+		showUndoneTasks();
 	}
 	
 	/**
@@ -172,7 +172,7 @@ public class TaskController {
 			}
 		} while(task.getProjectId() == 0);
 		taskService.saveTask(task);
-		showTasks();
+		showUndoneTasks();
 	}
 	
 	
@@ -184,11 +184,6 @@ public class TaskController {
 		Task task = null;
 		try {
 			task = taskList.get(lineNumber - 1);
-		} catch (Exception ex) {
-			System.out.println("Chosen task doesn't exist! Please type correct line number.");
-		} finally {
-			
-		}
 		String input = null;
 		do {
 			System.out.println("Old Task: " + task.getTaskName());
@@ -250,7 +245,11 @@ public class TaskController {
 			}
 		} while(task.getProjectId() == 0);
 		taskService.saveTask(task);
-		showTasks();
+	} catch (Exception ex) {
+		System.out.println("Chosen task doesn't exist! Please type correct line number.");
+	} finally {
+		showUndoneTasks();
+	}
 	}
 	
 	
@@ -265,19 +264,18 @@ public class TaskController {
 		} catch (Exception ex) {
 			System.out.println("Chosen task doesn't exist! Please type correct line number.");
 		} finally {
-			showTasks();
+			showUndoneTasks();
 		}
 	}
 	
 	public void markAsCompleted(int lineNumber) {
 		try {
 			Task task =	taskList.get(lineNumber - 1);
-			System.out.println(task);
 			taskService.markAsCompleted(task);
 		} catch (Exception ex) {
 			System.out.println("Chosen task doesn't exist! Please type correct line number.");
 		} finally {
-			showTasks();
+			showUndoneTasks();
 		}
 	}
 	
@@ -287,7 +285,7 @@ public class TaskController {
 		} catch (Exception ex) {
 			System.out.println("Chosen task doesn't exist! Please type correct line number.");
 		} finally {
-			showTasks();
+			showUndoneTasks();
 		}
 	}
 }

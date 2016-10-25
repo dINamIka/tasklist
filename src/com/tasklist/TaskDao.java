@@ -10,9 +10,9 @@ public interface TaskDao {
 
 	void remove(int id);
 
-	List<Task> getAll();
+	List<Task> getAll(boolean completed);
 	
-	public List<Task> getAllByProjectId(int projectId);
+	public List<Task> getAllByProjectId(int projectId, boolean completed);
 
 	int count();
 	
