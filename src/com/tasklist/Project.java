@@ -39,11 +39,14 @@ public class Project {
 		char[] array = new char[length];
 	    Arrays.fill(array, ' ');
 		String space = new String(array);
-		if (str.length() >= length) {
-			return str.substring(0, length - 3) + "...";
-		} else {
-			return str + space.substring(0, length - str.length());
+		if (str != null) {
+			if (str.length() >= length) {
+				return str.substring(0, length - 3) + "...";
+			} else {
+				return str + space.substring(0, length - str.length());
+			}
 		}
+		return space;
 	}
 	
 	@Override

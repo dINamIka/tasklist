@@ -105,9 +105,10 @@ public class TaskDaoImpl implements TaskDao {
 		
 		try {
 			if (projectId == 0) {
-				st = connection.prepareStatement("SELECT COUNT(*) FROM TASK");
+				st = connection.prepareStatement("SELECT COUNT(*) FROM TASK WHERE COMPLETED = FALSE");
 			} else {
-				st = connection.prepareStatement("SELECT COUNT(*) FROM TASK WHERE PROJECTID = ?");
+				st = connection.prepareStatement("SELECT COUNT(*) FROM TASK WHERE "
+												+ "PROJECTID = ? AND COMPLETED = FALSE");
 				st.setInt(1, projectId);
 			}
 			result = st.executeQuery();

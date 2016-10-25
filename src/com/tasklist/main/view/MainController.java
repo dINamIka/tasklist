@@ -1,6 +1,5 @@
 package com.tasklist.main.view;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -20,7 +19,9 @@ public class MainController {
 		this.prjController = new ProjectController(scanner);
 	}
 	
-	
+	/**
+	 * Launch command line menu. Parse commands that have typed by user like "edit task, add task..."
+	 */
 	public void launchCommandMenu() {
 		Pattern comPat = Pattern.compile("^([a-zA-Z]+\\s?){1,3}");
 		boolean menu = true;
@@ -33,7 +34,6 @@ public class MainController {
             	int endOfCommand = comMatcher.end();
 	            String command = input.substring(startOfCommand, endOfCommand);
 	            if (command.substring(endOfCommand - 1, endOfCommand).equals(" ")) {
-
 	            	command = command.substring(0, endOfCommand - 1);
 	            }
 	            String line;
@@ -67,6 +67,14 @@ public class MainController {
 		            	break;
 		            case "SHOW COMPLETED":
 		            	//add method to controller
+		            	System.out.println("show completed tasks");
+		            	break;
+		            case "SHOW BY RPOJECT":
+		            	//show tasks by project number line - add implementation
+//		            	line = input.substring(comMatcher.end() - 1, input.length());
+//		            	number = getLineNumber(line);
+		            	System.out.println("show tasks by project");
+		 	            break;
 		            case "ADD PROJECT":
 		            	this.prjController.addProject();
 		            	break;
@@ -83,13 +91,12 @@ public class MainController {
 		            case "SHOW PROJECTS":
 		            	this.prjController.showProjects();
 		            	break;
-		            case "SHOW MENU":
+		            case "MENU":
 		            	menu = false;
 		            	this.showMenu();
 		            	break;
 		            case "HELP":
-		            	//add method to main controoler
-		            	System.out.println("help menu");
+		            	showHelp();
 		            	break;
 		            case "EXIT":
 		            	System.exit(0);
@@ -109,7 +116,7 @@ public class MainController {
 		while(menu) {
 			System.out.println("Welcome to TODO Manager\n  MENU:");
 			Arrays.asList(MainMenu.values())
-			.forEach(e -> System.out.println("[" + e.getMenuLine() + "] " + e.getMenuString()));
+							.forEach(e -> System.out.println("[" + e.getMenuLine() + "] " + e.getMenuString()));
 			System.out.println("Please make your choice!");
 			String id = this.scanner.nextLine();
 			switch(id) {
@@ -121,6 +128,7 @@ public class MainController {
 			case "2":
 				taskController.addTask();
 				menu = false;
+				launchCommandMenu();
 				break;
 			case "3": 
 				prjController.showProjects();
@@ -130,6 +138,7 @@ public class MainController {
 			case "4":
 				prjController.addProject();
 				menu = false;
+				launchCommandMenu();
 				break;
 			case "5":
 				System.exit(0);
@@ -137,6 +146,14 @@ public class MainController {
 				System.out.println("Unrecognized command! Please choose from displayed list!");
 			}
 		}
+	}
+	
+	/**
+	 * show help menu with commands tips
+	 */
+	public void showHelp() {
+		System.out.println("HELP MENU:");
+    	Arrays.asList(Commands.values()).forEach(e -> System.out.println(e.getTip()));
 	}
 	
 	/**
@@ -189,23 +206,31 @@ public class MainController {
 	}
 	
 	public enum Commands {
+		
 		ADD_TASK("add task - add new task"),
-		SHOW_TASKS("show tasks - display all current tasks"),
-		SHOW_COMPLETED("show completed - display all done tasks"),
-		EDIT_TASK("edit task <line number> - editing particular task"),
-		DELETE_TASK("delete task <line number>"),
-		MARK_COMPLETED(""),
-		MARK_STARRED(""),
-		SHOW_BY_PROJECT(""),
-		ADD_PROJECT(""),
-		SHOW_PROJECTS(""),
-		EDIT_PROJECT(""),
-		DELETE_PROJECT(""),
-		SHOW_MENU(""),
-		HELP(""),
-		EXIT("");
+		SHOW_TASKS("show tasks - show all current tasks"),
+		SHOW_COMPLETED("show completed - show all done tasks"),
+		EDIT_TASK("edit task <line number> - editing selected task (task select by line number)"),
+		DELETE_TASK("delete task <line number> - delete selected task (task select by line number)"),
+		MARK_COMPLETED("mark completed <line number> - mark task as completed (or uncompleted)"),
+		MARK_STARRED("mark starred <line number> - mark task as starred (or unstarred)"),
+		SHOW_BY_PROJECT("show by project <line number> - show task by selected project"),
+		ADD_PROJECT("add project - add new project"),
+		SHOW_PROJECTS("show projects - show all projects"),
+		EDIT_PROJECT("edit project <line number> - edit selected project (project select by line number)"),
+		DELETE_PROJECT("delete project <line number> - delete selected project (project select by line number)"),
+		MENU("menu - open main menu of the application"),
+		HELP("help - show list of commands with descriptions"),
+		EXIT("exit - closing the application");
+		
+		String tip;
 		
 		Commands(String tip) {
+			this.tip = tip;
+		}
+		
+		public String getTip() {
+			return tip;
 		}
 		
 	}
