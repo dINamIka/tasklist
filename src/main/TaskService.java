@@ -14,9 +14,13 @@ public interface TaskService {
 
 	List<Task> getTasks();
 	
-	public List<Task> getTasksByProjectId(int projectId);
+	public List<Task> getTasksByProjectId(int taskId);
 
 	int countTasks();
 	
-	int countTasksByProjectIds(int projectId);
+	int countTasksByProjectIds(int taskId);
+	
+	void markAsCompleted(Task task);
+
+	void markAsStarred(Task task);
 }

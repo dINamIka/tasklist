@@ -26,8 +26,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public Project findProject(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return prjDao.findById(id);
 	}
 
 	@Override

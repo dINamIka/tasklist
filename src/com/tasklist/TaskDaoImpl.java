@@ -5,7 +5,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class TaskDaoImpl implements TaskDao {
 	public void save(Task task) {
 		Connection connection = DbUtil.getConnection();
 		PreparedStatement ps = null;
-		
+		System.out.println(task);
 		int taskId = task.getId();
 		String taskName = task.getTaskName();
 		boolean completed = task.isCompleted();
@@ -44,9 +43,9 @@ public class TaskDaoImpl implements TaskDao {
 				ps.setString(8, note);
 			} else {
 				ps = connection
-						.prepareStatement("UPDATE PROJECT SET TASKNAME = ?, COMPLETED = ? "
-								+ " STARRED = ?, PRIORITY = ?, STARTDATE = ?, DUEDATE = ?, "
-								+ " PROJECTID = ?, NOTE = ? WHERE ID = ?");
+						.prepareStatement("UPDATE TASK SET TASKNAME = ?, COMPLETED = ?, "
+								+ "STARRED = ?, PRIORITY = ?, STARTDATE = ?, DUEDATE = ?, "
+								+ "PROJECTID = ?, NOTE = ? WHERE ID = ?");
 				ps.setString(1, taskName);
 				ps.setBoolean(2, completed);
 				ps.setBoolean(3, starred);
@@ -144,9 +143,11 @@ public class TaskDaoImpl implements TaskDao {
 		Task task = null;
 		try {
 			if (projectId == 0) {
-				st = connection.prepareStatement("SELECT * FROM TASK");
+				st = connection.prepareStatement("SELECT * FROM TASK ORDER BY -DUEDATE DESC, "
+												+ "PRIORITY DESC, STARRED, TASKNAME");
 			} else {
-				st = connection.prepareStatement("SELECT * FROM TASK WHERE PROJECTID = ?");
+				st = connection.prepareStatement("SELECT * FROM TASK WHERE PROJECTID = ? "
+									+ "ORDER BY -DUEDATE DESC, PRIORITY DESC, STARRED, TASKNAME");
 				st.setInt(1, projectId);
 			}
 			ResultSet result = st.executeQuery();

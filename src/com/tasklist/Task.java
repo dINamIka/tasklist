@@ -1,6 +1,7 @@
 package com.tasklist;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Arrays;
 
 public class Task {
@@ -89,6 +90,14 @@ public class Task {
 	public void setNote(String note) {
 		this.note = note;
 	}
+	
+	public boolean isOverdued(){
+		boolean response = false;
+		if (this.dueDate != null) {
+			response = this.dueDate.before(Date.valueOf(LocalDate.now()));
+		}
+		return response;
+	}
 
 	public String stringCutter(String str, int length) {
 		char[] array = new char[length];
@@ -104,9 +113,9 @@ public class Task {
 	
 	@Override
 	public String toString() {
-		return (completed ? "[\u2714]" : "[ ]") + "\t" + (starred ? "[\u2605]" : "[ ]") + "\t"
-				+ stringCutter(taskName, 30) + "\t" + (startDate != null ? startDate : "not defined") + "\t" 
-				+ (dueDate != null ? dueDate : "not defined") + "\t";
+		return " " + (completed ? "[\u2714]" : "[ ]") + "\t" + "  " + (starred ? "[\u2605]" : "[ ]") + "\t"
+				+ (isOverdued() ? "  [!]" : "  [ ]") + "\t" + stringCutter(taskName, 30) + "\t" + priority + "\t" + (startDate != null ? startDate : "[not defined]") + "\t" 
+				+ (dueDate != null ? dueDate : "[not defined]") + "\t";
 	}
 	
 	

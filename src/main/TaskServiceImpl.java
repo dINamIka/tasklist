@@ -35,8 +35,8 @@ public class TaskServiceImpl implements TaskService{
 	}
 
 	@Override
-	public List<Task> getTasksByProjectId(int projectId) {
-		return getTasksByProjectId(projectId);
+	public List<Task> getTasksByProjectId(int taskId) {
+		return getTasksByProjectId(taskId);
 	}
 
 	@Override
@@ -45,8 +45,24 @@ public class TaskServiceImpl implements TaskService{
 	}
 
 	@Override
-	public int countTasksByProjectIds(int projectId) {
-		return taskDao.countByProjectId(projectId);
+	public int countTasksByProjectIds(int taskId) {
+		return taskDao.countByProjectId(taskId);
 	}
-	
+
+	@Override
+	public void markAsCompleted(Task task) {
+		task.setCompleted(true);
+		taskDao.save(task);
+	}
+
+	@Override
+	public void markAsStarred(Task task) {
+		boolean starred = true;
+		if (task.isStarred()) {
+			starred = false;
+		}
+		task.setStarred(starred);
+		taskDao.save(task);
+	}
+
 }

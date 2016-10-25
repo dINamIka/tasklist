@@ -69,7 +69,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		Project project = null;
 		try {
 			Statement st = connection.createStatement();
-			ResultSet result = st.executeQuery("SELECT * FROM PROJECT");
+			ResultSet result = st.executeQuery("SELECT * FROM PROJECT ORDER BY PROJECTNAME");
 			if (result != null) {
 				while (result.next()) {
 					project = new Project();
@@ -115,12 +115,13 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Project findById(int id) {
 		Connection connection = DbUtil.getConnection();
 		PreparedStatement prepStatement = null;
+		ResultSet result = null;
 		Project project = null;
 		try {
 			prepStatement = connection.prepareStatement("SELECT * FROM PROJECT WHERE ID = ?");
 			prepStatement.setInt(1, id);
 
-			ResultSet result = prepStatement.executeQuery();
+			result = prepStatement.executeQuery();
 			if (result != null) {
 				while (result.next()) {
 					project = new Project();
@@ -133,6 +134,7 @@ public class ProjectDaoImpl implements ProjectDao {
 			e.printStackTrace();
 		} finally {
 			try {
+				result.close();
 				prepStatement.close();
 				connection.close();
 			} catch (SQLException e) {
