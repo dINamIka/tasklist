@@ -14,4 +14,6 @@ After start of application you can see Main Menu of the application with 5 items
 [5] QUIT
 If you choose 1 item application show you list of all undone tasks with detailed information about them. 
 In this view you can interact with application by text commands (all of them will be list bellow). For getting tips
-just type "help" and you will see list of all available commands
+just type "help" and you will see list of all available commands...
+
+TO BE CONTINUED...
