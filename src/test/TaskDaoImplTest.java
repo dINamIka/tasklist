@@ -4,9 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.tasklist.ProjectDaoImpl;
-import com.tasklist.TaskDao;
-import com.tasklist.TaskDaoImpl;
+import com.tasklist.dao.TaskDao;
+import com.tasklist.dao.jdbcMysql.TaskDaoImpl;
 
 public class TaskDaoImplTest {
 
