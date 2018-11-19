@@ -1,1 +1,7 @@
 /bin/
+
+#ignored files
+**/.DS_Store
+**/.classpath
+**/.project
+**/.settings
